@@ -1,7 +1,15 @@
 const db = require('../../data/dbConfig');
 
 const get = () => {
-    return db('tasks');
+    return db('tasks as t')
+        .leftJoin('projects as p', 't.project_id', 'p.project_id')
+        .select(
+            'task_id', 
+            'task_description', 
+            'task_notes', 
+            db.raw("CASE WHEN task_completed = 1 THEN true ELSE false END AS task_completed"), 
+            'project_name', 
+            'project_description');
 }
 
 const getById = async (id) => {

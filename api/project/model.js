@@ -5,7 +5,7 @@ const get = () => {
 }
 
 const getById = async (id) => {
-    const result = await db('project').where('project_id', id).first();
+    const result = await db('projects').where('project_id', id).first();
     return result;
 }
 
