@@ -15,6 +15,16 @@ const checkProjectId = async ( req, res, next) => {
     }
 }
 
+const checkTaskPayload = (req, res, next) => {
+    const { task_description } = req.body;
+    if (!task_description) {
+        res.status(400).json({ message: 'task description is missing' })
+    } else {
+        next()
+    }
+}
+
 module.exports = {
-    checkProjectId
+    checkProjectId,
+    checkTaskPayload
 }

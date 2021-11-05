@@ -1,6 +1,7 @@
 const express = require('express');
 const {
-    checkProjectId
+    checkProjectId, 
+    checkTaskPayload
 } = require('./middleware');
 const Task = require('./model');
 
@@ -14,7 +15,7 @@ router.get('/', (req, res, next) => {
         .catch(next);
 })
 
-router.post('/', checkProjectId, (req, res, next) => {
+router.post('/', checkTaskPayload, checkProjectId, (req, res, next) => {
     Task.create(req.body)
         .then(task => {
             res.status(201).json(task);
