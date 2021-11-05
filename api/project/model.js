@@ -1,7 +1,22 @@
 const db = require('../../data/dbConfig');
 
-const get = () => {
-    return db('projects');
+const get = async () => {
+    const rows = await db('projects')
+    const result = []
+    rows.forEach(row => {
+        if (row.project_completed) {
+            result.push({
+                ...row,
+                project_completed: true
+            })
+        } else {
+            result.push({
+                ...row,
+                project_completed: false
+            })
+        }
+    })
+    return result;
 }
 
 const getById = async (id) => {
@@ -12,7 +27,20 @@ const getById = async (id) => {
 const create = async (project) => {
     const [id] = await db('projects').insert(project);
     const newProject = await getById(id);
-    return newProject;
+    const converter = (project) => { 
+        if (project.project_completed) {
+            return {
+                ...project,
+                project_completed: true
+            }
+        } else {
+            return {
+            ...project,
+            project_completed: false
+            }
+        }
+    }
+    return converter(newProject)
 }
 
 module.exports = {
